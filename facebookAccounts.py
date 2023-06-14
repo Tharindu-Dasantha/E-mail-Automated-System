@@ -30,6 +30,7 @@ for line in lines:
         link = open_scraper(line)
         openfileToWrite.write(f"{link}\n")
     else:
+        print("not a line. " + f"{count}/{amount}")
         continue
     count += 1
     

@@ -46,11 +46,13 @@ for line in lines:
     for i in range(1, 21):
         print(i)
         time.sleep(1)
-
+        
+    # Getting the send mail button
     mailbutton = driver.find_element_by_xpath(
         "/html/body/div[2]/div[1]/div[1]/div[2]/div[2]/div[1]/div/button[1]")
     mailbutton.click()
 
+    # wait until the page loads
     print("Tring to send a mail to " + email)
     # Wait till the send page is loaded
     send_button = wait.until(EC.visibility_of_element_located(
@@ -61,19 +63,33 @@ for line in lines:
         time.sleep(1)
     print("creating a new mail for " + email)
 
+    # sending the email address
     TOField = wait.until(EC.visibility_of_element_located(
         (By.XPATH, "/html/body/div[2]/div[1]/div[2]/div[1]/div[2]/div[1]/div[2]/div/div/div/div[4]/div[1]/div/input")))
-    TOField.send_keys(f"{email}")
     
-
+    TOField.send_keys(f"{email}") # the email address
+    
+    # send the subject
     subject = driver.find_element_by_xpath(
         "/html/body/div[2]/div[1]/div[2]/div[1]/div[2]/div[1]/div[2]/div/div/div/div[5]/input")
+    
     subject.send_keys("just a test")  # the subject for the email
 
     
-    actions.send_keys(Keys.TAB)
-    actions.send_keys("Just testing wheather this works")
-    actions.perform()
+    # Select the body tag
+    iframeDocument = driver.find_element_by_xpath("/html/body/div[2]/div[1]/div[2]/div[1]/div[2]/div[1]/div[2]/div/div/div/div[6]/div/div/div/iframe")
+    
+    # Go into the iframe
+    driver.switch_to.frame(iframeDocument)
+    
+    # Locate the text inside the iframe
+    bodyMail_tag = driver.find_element_by_xpath("/html/body")
+    
+    # Sending the key
+    bodyMail_tag.send_keys("This is just a test") # Enter the body of the mail here
+    
+    # switch back to normal
+    driver.switch_to.default_content()
     
     input()
 
